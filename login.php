@@ -1,5 +1,6 @@
 <?php 
     session_start();
+    ob_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +16,7 @@
         if(isset($_POST['login'])) {
             $email = $_POST['email'];
             $password = $_POST['password'];
+
             $email_search = "select * from registration where email = '$email' and status ='active'";
             $query = mysqli_query($con,$email_search);
 
@@ -26,6 +28,13 @@
                 $_SESSION['username'] = $email_pass['name'];
                 $pass_decode=password_verify($password, $db_pass);
                 if($pass_decode) {
+                    if(isset($_POST['rememberme'])) {
+                        setcookie('emailcookie',$email,time()+86400);
+                        setcookie('passwordcookie',$password,time()+86400);
+                        header('location:home.php');
+                    } else {
+                        header('location:home.php');
+                    }
                     echo "login successful";
                     ?>
                         <script>
@@ -52,8 +61,13 @@
         </p>
     </div>
     <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
-        <input type="text" name="email" placeholder="Email ID"/><br>
-        <input type="password" name="password" placeholder="Password"/><br>
+        <input type="text" name="email" placeholder="Email ID" value="<?php if(isset($_COOKIE['emailcookie'])) {
+            echo $_COOKIE['emailcookie'];
+        } ?>"/><br>
+        <input type="password" name="password" placeholder="Password" value="<?php if(isset($_COOKIE['passwordcookie'])) {
+            echo $_COOKIE['passwordcookie'];
+        } ?>"/><br>
+        <input type="checkbox" name="rememberme">Remember me<br>
         <input type="submit" name="login" value="Login Now"/>
     </form>
     <h1>Not Have an account ?</h1><a href="#">SignUp Here</a>
