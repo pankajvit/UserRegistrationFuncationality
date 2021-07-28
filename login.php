@@ -70,6 +70,7 @@
         <input type="checkbox" name="rememberme">Remember me<br>
         <input type="submit" name="login" value="Login Now"/>
     </form>
-    <h1>Not Have an account ?</h1><a href="#">SignUp Here</a>
+    <h6>Forgot Your Password, No worry ? <a href="recover_email.php">Click here </a></h6>
+    <h6>Not Have an account ?<a href="index.php">SignUp Here</a></h6>
 </body>
 </html>
